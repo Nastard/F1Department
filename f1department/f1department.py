@@ -20,3 +20,6 @@ class F1Department:
 
 	def constructor_most_laps_led(self):
 		return 0;
+
+	def constructor_most_points(self):
+		return 0;
