@@ -17,3 +17,6 @@ class F1Department:
 
 	def nationality_most_wins(self):
 		return 0;
+
+	def constructor_most_laps_led(self):
+		return 0;
