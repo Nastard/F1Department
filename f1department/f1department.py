@@ -11,3 +11,6 @@ class F1Department:
 
 	def driver_most_wins(self):
 		return 0;
+
+	def driver_most_poles(self):
+		return 0;
