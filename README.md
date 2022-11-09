@@ -6,20 +6,57 @@
 ### Descripción del Proyecto
 Se va a desarrollar una aplicación sobre la Formula 1, competición reina del automovilismo, denominada F1Department. En resumen, esta aplicación ofrecerá multitud de estadísticas relacionadas con la Formula 1.
 
-Actualmente no existen demasiadas páginas web o aplicaciones que muestren la gran cantidad de datos que se genera en un evento de Formula 1, pues la Formula 1 tiene registros desde el año 1950, cuando empezó esta competición, y además con el paso de los años cada evento de Formula 1 genera una gran cantidad de datos.
-Tampoco existe una gran cantidad de páginas web que muestren las diferentes estadísticas que esta competición genera.
-
-Por ello, se va a desarrollar este proyecto para solventar este problema. A parte de guardar los datos necesarios, se calculará diferentes estadísticas. Las estadísticas que se pueden generar con los datos son muy diversas, como por ejemplo indicar cual es el piloto con más victorias, el piloto con más poles o incluso que nacionalidad ha ganado más carreras.
-
-Este proyecto está destinada para fans de la Formula 1 y para cualquier persona o entidad que necesita de esta información generada, como puede ser el caso de las casas de apuestas, otras aplicaciones...
-
 ### Lógica de negocio
 En resumen, la lógica de negocio de esta aplicación va a ser la de mostrar resultados calculados a partir de los datos disponibles. Al haber una gran cantidad de datos, se pueden generar multitud de estadísticas que nos interese analizar.
 
-También va a ser necesario juntar en un solo modelo todos los datos disponibles. Se va a usar la página [Ergast](https://ergast.com/mrd/), la cual contiene todos los datos de Formula 1 desde 1950 hasta la carrera más reciente. Los datos que nos proporcionan están divididos, por lo que este proyecto generará un modelo de datos en el cual estén todos los datos unificados.
+
+## Concretando y planificando el proyecto
+### Hitos establecidos para el proyecto
+Se han establecido los siguientes Hitos para la realización de este proyecto.
+
+**[Hito0: Descripción del problema a resolver.](https://github.com/Nastard/F1Department/milestone/1)**\
+En este hito se define el proyecto  y el problema que resolver. También se define la lógica de negocio que el proyecto va a tener.
+
+**[Hito1: Diseño de las clases necesarias para leer y almacenar todos los datos.](https://github.com/Nastard/F1Department/milestone/2)**\
+En este hito se quiere definir e implementar el código necesario con una estructura básica que usara el proyecto para almacenar los datos leídos.
+
+**[Hito2: Diseño de los métodos necesarios que calculará y devolverá las diferentes estadísticas relacionadas con la Formula 1.](https://github.com/Nastard/F1Department/milestone/3)**\
+En este hito se va a continuar con el desarrollo del código implementando los diversos métodos que tendrá el proyecto, en este caso el cálculo de estadísticas.
+
+**[Hito3: Diseño de una API que devuelva las diferentes estadísticas.](https://github.com/Nastard/F1Department/milestone/4)**\
+En este hito se desea desarrollar una API que devuelva los resultados de las distintas estadísticas.
+
+### Historias de usuario para el proyecto
+Se han establecido las siguientes historias de usuario para la realización de este proyecto. Además se definen issues relacionadas con estas historias de usuario.
+
+**[[HU1]Como administrador de la aplicación, dado que tengo disponible los datos históricos de la Formula 1, necesito unificar todos estos datos en una única estructura.](https://github.com/Nastard/F1Department/issues/4)**\
+En esta historia de usuario se quiere que el administrador del proyecto sea capaz de unificar los distintos datos disponibles en una estructura.\
+Para realizar la HU1, se creará una clase que sea capaz de unir los ficheros CSV y devolverlo.
+- *[Como programador, se creará una clase que lea los ficheros CSV y lo unifiquen en uno solo CSV y también que lo devuelva como una estructura de datos.](https://github.com/Nastard/F1Department/issues/6)*
+
+**[[HU2]Como usuario de la aplicación, quiero saber diversas estadísticas relacionadas con la Formula 1.](https://github.com/Nastard/F1Department/issues/5)**\
+En esta historia de usuario un usuario indica qué estadísticas desea saber.\
+Para ello se crean diferentes issues para las diversas estadísticas que el administrador deberá implementar:
+- *[Como programador, se necesita implementar un método que devuelva al piloto con más victorias.](https://github.com/Nastard/F1Department/issues/7)*
+- *[Como programador, se necesita implementar un método que devuelva al piloto con más pole position.](https://github.com/Nastard/F1Department/issues/8)*
+- *[Como programador, se necesita implementar un método que devuelva la nacionalidad que ha ganado más carreras.](https://github.com/Nastard/F1Department/issues/9)*
+- *[Como programador, se necesita implementar un método que devuelva el constructor con más vueltas lideradas.](https://github.com/Nastard/F1Department/issues/10)*
+- *[Como programador, se necesita implementar un método que devuelva el constructor con más puntos obtenidos.](https://github.com/Nastard/F1Department/issues/11)*
+
+### Descripción de las clases para el proyecto
+Se han definido las siguientes clases para la realización de este proyecto. Se ha decidido hacer dos clases, una para leer los datos y otra para devolver las estadísticas, para una mejor reutilización del código.
+
+**[F1DepartmentDataJoin](../../f1department/f1department_data_join.py)**\
+Esta clase sirve para leer todos los ficheros CSV de datos y unificarlos en un objeto de tipo DataFrame.
+
+**[F1Department](../../f1department/f1department.py)**\
+Esta clase sirve para implementar los distintos métodos que devolverán las estadísticas.   
+
 
 ## Documentación del proyecto
 Enlaces con la documentación del proyecto:
-* [Documentación del Hito 0](./doc/hito0/README.md)
-	* [Configuración inicial del repositorio](./doc/hito0/configuracionInicial.md)
-	* [Descripción del problema y lógica de negocio](./doc/hito0/descripcionLogica.md)
+* [Documentación del Hito 0 de la asignatura](./docs/hito0/README.md)
+* [Documentación del Hito 1 de la asignatura](./docs/hito1/README.md)
+	* [Historias de Usuario](./docs/hito1/historiasUsuario.md)
+	* [Hitos para el proyecto](./docs/hito1/hitosProyecto.md)
+	* [Clases creadas](./docs/hito1/descripcionClases.md)
