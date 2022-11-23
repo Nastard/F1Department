@@ -10,7 +10,22 @@ class F1Department:
 		self.f1_data = f1_data_object.df_f1_data
 
 	def driver_most_wins(self):
-		return 0;
+		folder = './data/'
+		df_drivers = pd.read_csv(folder+'drivers.csv')
+
+		total_wins = []
+		for i in df_drivers.index:
+			total_wins.append(0)
+		df_drivers['total_wins'] = total_wins
+
+		for i in df_drivers.index:
+			wins = len(self.f1_data[(self.f1_data['driverId']==df_drivers['driverId'][i])&(self.f1_data['position']=='1')])
+			df_drivers.at[i, 'total_wins'] = wins
+			wins = 0
+
+		driver_most_wins = df_drivers.query('total_wins == total_wins.max()')
+		result = driver_most_wins.to_json(orient="records")
+		return result
 
 	def driver_most_poles(self):
 		return 0;
