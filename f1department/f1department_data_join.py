@@ -18,4 +18,5 @@ class F1DepartmentDataJoin:
 		self.df_f1_data = pd.merge(df_results_drivers_constructors, df_races_circuits, on='raceId', how='left')
 
 	def save_data_csv(self):
-		return 0;
+		folder = './data/'
+		self.df_f1_data.to_csv(folder+'f1_data.csv', index=False, sep=',', encoding='utf-8')
