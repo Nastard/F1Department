@@ -46,7 +46,38 @@ class F1Department:
 		return result
 
 	def nationality_most_wins(self):
-		return 0;
+		folder = './data/'
+		df_drivers = pd.read_csv(folder+'drivers.csv')
+
+		total_wins = []
+		for i in df_drivers.index:
+			total_wins.append(0)
+		df_drivers['total_wins'] = total_wins
+
+		for i in df_drivers.index:
+			wins = len(self.f1_data[(self.f1_data['driverId']==df_drivers['driverId'][i])&(self.f1_data['position']=='1')])
+			df_drivers.at[i, 'total_wins'] = wins
+			wins = 0
+
+		nationalities = df_drivers['nationality'].value_counts()
+		df_nationalities = pd.DataFrame(nationalities)
+		df_nationalities = df_nationalities.reset_index()
+		del df_nationalities['nationality']
+		df_nationalities.columns = ['nationality']
+
+		total_nationality_wins = []
+		for i in df_nationalities.index:
+			total_nationality_wins.append(0)
+		df_nationalities['total_nationality_wins'] = total_nationality_wins
+
+		for i in df_nationalities.index:
+			wins = len(self.f1_data[(self.f1_data['nationality_x']==df_nationalities['nationality'][i])&(self.f1_data['position']=='1')])
+			df_nationalities.at[i, 'total_nationality_wins'] = wins
+			wins = 0
+
+		nationality_most_wins = df_nationalities.query('total_nationality_wins == total_nationality_wins.max()')
+		result = nationality_most_wins.to_json(orient="records")
+		return result
 
 	def constructor_most_laps_led(self):
 		return 0;
