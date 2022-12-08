@@ -44,3 +44,9 @@ $ docker build -t testf1department .
 ```
 Y una vez finalice podemos ver el tamaño que ocupa la imagen:
 ![CapturaTestsImagen](./img/testsImagen.png)
+Para ejecutar el contenedor, debemos ejecutar el siguiente comando:
+```
+$ docker run testf1department
+```
+Y como vemos, los test se ejecutan correctamente:
+![CapturaRunTests](./img/runTests.png)

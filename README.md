@@ -2,83 +2,124 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 >Proyecto a desarrollar de la asignatura Cloud Computing del Máster en Ingeniería Informática, curso 2022-2023.
 
-## Biblioteca de aserciones
+## Creación de un contenedor para pruebas
+### Elección del contenedor base
+Este proyecto está realizado en Python, por lo que necesitamos una imagen de Docker que sea capaz de ejecutar los tests proyecto. Por ello se van analizar las siguientes imágenes:
+* [Imagen Oficial de Ubuntu](https://hub.docker.com/_/ubuntu)
+* [Imagen Oficial de Python](https://hub.docker.com/_/python)
+* [Imagen Oficial de Alpine](https://hub.docker.com/_/alpine)
 
-### Elección de la biblioteca de aserciones
-Existen diferentes bibliotecas de aserciones en Python. Vamos a mostrar algunas de las más conocidas y elegiremos la más adecuada para el proyecto.
+A modo resumen, mostramos las imágenes probadas, donde podemos ver el tamaño en disco de cada una.
 
-#### Unittest
-Unittest es una librería estándar de pruebas unitarias de las más usadas popular. Permite testear métodos y clases de forma muy sencilla y ofreciendo más funcionalidades que otras librerías, como por ejemplo una función para inicializar los datos a usar. Viene por defecto con Python\
-Página oficial: https://docs.python.org/3/library/unittest.html
+![CapturaImagenesSize](./docs/hito3/img/imagenesSize.png)
 
-#### Assert del lenguaje Python
-Python permite testear con una palabra clave, *assert*. Es una manera muy rápida y sencilla para hacer test, pero no está pensado para ello y por eso ofrece unas características muy inferiores que una librería. Está más pensado para debuggear, aunque a veces se usa para testeo.
+#### Imagen Oficial de Ubuntu
+Dado que el proyecto se está desarrollando en Ubuntu, se ha probado las imágenes oficiales de Ubuntu, concretamente las versiones *20.04* y *22.04(latest)*. Como podemos ver, ambas versiones ocupan poco espacio, pero el problema de usar estas imágenes es que no disponen de Python instalado por defecto, por lo que tendríamos que instalarlo.
 
-#### Asertpy
-Asertpy es una biblioteca de aserciones con una buena API fluida. Para poder usarla es necesario instalarla, pues no viene por defecto con Python. Su forma de uso es algo compleja, pero también ofrece más funcionalidades como testear varios casos con una sola sentencia.\
-Página oficial: https://pypi.org/project/assertpy/
+![CapturaFalloUbuntu](./docs/hito3/img/falloUbuntu.png)
 
-### Conclusión
-De estas tres bibliotecas de aserciones, vamos a usar Unittest porque es de las más usadas y sencillas de programar, sin necesidad de tener que instalarla. También porque se adapta bien al proyecto.
+Dado que Python tiene una imagen oficial, nos podemos ahorrar su instalación si usamos alguna imagen de Python, sin que el tamaño usado no se vea afectado enormemente.
 
-### Uso de marco de pruebas
-El uso de Unittest se hace dentro de las clases de test.
+#### Imagen Oficial de Python
+Python ofrece diferentes tags de su imagen. Estas tags depende de la versión de Python y de otras características. Al ser imágenes de Python, tienen lo necesario para poder ejecutar los tests del proyecto, a excepción del gestor de tareas *Make* que hemos elegido. Como vemos en la primera imagen, usando la tag *latest* de Python es la que más pesa comparado con las otras, por la que la descartamos. Las tags de *alpine* están muy limitadas en cuanto a los comandos que dispone, por lo que no nos viene bien en este proyecto, aunque su espacio sea muy pequeño. Las tags *slim* ofrecen todo lo necesario para poder ejecutar los tests del proyecto y con un tamaño muy competente. Como vemos ofrece diferentes tags, por lo que usaremos la tag *3.9-slim-buster*, pues es la que menos ocupa, ofreciendo lo mismo que las demás. Dado que Python tiene muchas versiones, nos hemos inclinado por la versión *3.9*, pues es compatible con las librerías necesarias del proyecto, definidas en el archivo *requirements.txt*.
 
-## Marco de pruebas
+#### Imagen Oficial de Alpine
+Las imágenes de Alpine son las que menos espacio ocupan, pero al igual que las de Ubuntu, habría que instalar Python, por lo que la descartamos también.
 
-### Elección del marco de pruebas
-Existen diferentes marco de pruebas en Python. Vamos a mostrar algunas de las más conocidas y elegiremos la más adecuada para el proyecto.
+#### Imagen y tag elegida
+En resumen, la imagen elegida como contenedor base ha sido **python:3.9-slim-buster** por ocupar poco espacio y por tener por defecto todo lo necesario para ejecutar los tests del proyecto.
 
-#### Pytest
-Pytest es un marco de prueba de código abierto de los más utilizados que existen. Admite también pruebas unitarias, pruebas funcionales y pruebas de API. Permite hacer pruebas compactas y simples y dispone de una gran comunidad detrás. Es ideal para crear pruebas pequeñas y concisas, que admitan escenarios complejos.\
-Página oficial: https://docs.pytest.org/en/7.2.x/
+## Archivo Dockerfile
 
-#### Behave
-Behave es un marcos de prueba más populares para BDD (desarrollo basado en el comportamiento). Permite escribir casos de prueba en un lenguaje legible. dispone una gran cantidad de documentación. Solo sirve para pruebas de caja negra.\
-Página oficial: https://behave.readthedocs.io/en/latest/
+### Buenas prácticas en archivos Dockerfiles
+Existe una serie de buenas prácticas a la hora de crear un Dockerfile. Estas prácticas sirven para mejorar la seguridad del contenedor o incluso conseguir que los contenedores ocupen menos espacio en disco. El siguiente enlace detalla muy bien estas prácticas.
 
-#### Testify
-Testify está diseñado para reemplazar los marcos de Unittest y Nose, y tiene funciones avanzadas para el Unittest estándar. Se utiliza para pruebas unitarias, pruebas de integración y pruebas de sistemas. Ofrece multitud de complementos y tiene una sintaxis simple. No dispone de una documentación extensa, por lo que es difícil de aprender.
-Página oficial: https://pypi.org/project/testify/
+[Docker best practices, testdriven.io](https://testdriven.io/blog/docker-best-practices/)
 
-### Conclusión
-De estos tres marcos de pruebas, vamos a usar Pytest, ya que es la más completa y sencilla y las características que ofrece son las más indicadas para este proyecto. Para usarla la instalaremos.
+Para este proyecto, se ha usado las siguientes buenas prácticas:
+* Los comandos usados en el archivo Dockerfile siguen un orden para construir el contenedor.
+* Se ha usado una imagen con poco tamaño, pero ofreciendo todo lo que necesitamos, en concreto la imagen **python:3.9-slim-buster** que ocupa 117MB.
+* Se ha minimizado el número de capas, combinando cuando ha sido posible los comandos *RUN* y *COPY*.
+* Se ha creado un usuario para que el contenedor no sea usado como *root*.
+* El contenedor solo hace un proceso, que es el de ejecutar los test del proyecto.
+* Se usa el comando *ENTRYPOINT* en vez de *CMD*, el cual previene que el comando ejecutado sea modificado.
 
-### Uso de marco de pruebas
-Para ejecutar el marco de pruebas, tan solo debemos ir a la carpeta de los test y ejecutar el siguiente comando:
+### Archivo Dockerfile diseñado
+Tras haber analizado las buenas prácticas descritas anteriormente, se ha diseñado el siguiente Dockerfile:
 ```
-$ pytest
+FROM python:3.9-slim-buster
+
+WORKDIR /usr/app
+
+COPY requirements.txt .
+
+RUN apt-get update \
+	&& apt-get upgrade -y \
+	&& apt-get install make \
+	&& pip3 install -r requirements.txt
+
+COPY . .
+
+RUN addgroup --system userapp \
+	&& adduser --system userapp \
+	&& adduser userapp userapp \
+	&& chown -R userapp:userapp .
+
+USER userapp
+
+ENTRYPOINT ["make", "test"]
 ```
-
-## Gestor de tareas
-
-### Elección del gestor de tareas
-Existen diferentes gestores de tareas en Python. Vamos a mostrar algunas de las más conocidas y elegiremos la más adecuada para el proyecto.
-
-#### Makefile
-Makefile es un gestor muy utilizado que permite gestionar Python entre muchas otras cosas que permite realizar. Es muy sencillo de usar, pero puede complicarse si queremos hacer tareas más complejas. Las tareas se definen en un fichero y permiten interactuar con el sistema operativo.
-
-#### Invoke
-Invoke es una biblioteca de Python para administrar tareas orientados a shell y organizar el código de Python ejecutable en tareas invocables por CLI. Se inspira en varias fuentes, ofreciendo un conjunto de funciones potente y limpio.\
-Página oficial: https://www.pyinvoke.org/
-
-#### Pypyr
-Pypyr es un gestor de tareas para procesos automáticos. Se ejecuta de forma condicional y puede manejar errores. Las tareas se describen en un fichero yaml de forma secuencial, por lo que es muy parecido a Makefile. Se debe instalar, no viene con como una librería de Python. Este gestor es nuevo y hay poca información en internet, por lo que si hay dudas o errores puede ser difícil conseguir una solución.\
-Página oficial: https://pypyr.io/
-
-#### Conclusión
-De estos tres gestores de tareas, vamos a usar Makefile, pues es el más sencillo y rápido de utilizar y es capaz de abarcar las necesidades del proyecto sin tener que realizar instalaciones adicionales o configuraciones más complejas.
-
-### Configuración y uso del gestor de tareas
-Para ejecutar el gestor de tareas, tan solo es necesario ejecutar las opciones descritas en el archivo Makefile. Estas opciones son las siguientes:\
-Esta opción instala las librerías necesarias que necesita el proyecto. Para ello lee el archivo *requirements.txt*, donde se encuentran todos los paquetes necesarios del proyecto.
+Para ejecutar el archivo Dockerfile y así crear la imagen, ejecutamos en la terminal:
 ```
-$ make install
+$ docker build -t testf1department .
 ```
-Esta opción permite ejecutar los test, haciendo uso del marco de pruebas, en este caso *Pytest*.
+Y una vez finalice podemos ver el tamaño que ocupa la imagen:
+![CapturaTestsImagen](./docs/hito3/img/testsImagen.png)
+Para ejecutar el contenedor, debemos ejecutar el siguiente comando:
 ```
-$ make test
+$ docker run testf1department
 ```
+Y como vemos, los test se ejecutan correctamente:
+![CapturaRunTests](./docs/hito3/img/runTests.png)
+
+## Registro de contenedores
+Se ha subido el contenedor creado para los tests en DockerHub y en el registro público de contenedores de GitHub, GitHub Container Registry. Para realizar esta parte se ha seguido la siguiente guía:
+
+[Publishing Docker images](https://docs.github.com/en/actions/publishing-packages/publishing-docker-images)
+
+### Docker Hub
+Se ha configurado un GitHub Action para que suba automáticamente a DockerHub la imagen creada para la ejecución de tests. Se definen dos *SECRETS* en el repositorio para la autenticación de Docker Hub. Ahora se define el archivo *yml* para el flujo, y como vemos a continuación, el flujo se ejecuta correctamente y crea la imagen en nuestro repositorio de DockerHub:
+
+![CapturaActionDockerHub](./docs/hito3/img/actionDockerHub.png)
+
+![CapturaRepositoryDockerHub](./docs/hito3/img/repositoryDockerHub.png)
+
+![CapturaSizeImageDockerHub](./docs/hito3/img/sizeImageDockerHub.png)
+
+### GitHub Container Registry
+Ahora vamos a subir la imagen en GitHub Container Registry. Se ha configurado un GitHub Action para que también suba automática la imagen a Github Container Registry. A continuación se muestra que el flujo se ejecuta correctamente:
+
+![CapturaActionGitHubContainerRegistry](./docs/hito3/img/actionGitHubContainerRegistry.png)
+
+Podemos ver que en el repositorio de GitHub aparece nuestro nuevo paquete:
+
+![CapturaAboutGitHub](./docs/hito3/img/aboutGitHub.png)
+
+Podemos acceder a él a través del siguiente enlace:
+
+https://github.com/Nastard/F1Department/pkgs/container/f1department
+
+![CapturaImageGitHubContainerRegistry](./docs/hito3/img/imageGitHubContainerRegistry.png)
+
+## Ejecución de tests
+### Biblioteca de aserciones
+Vamos a usar Unittest porque es de las más usadas y sencillas de programar, sin necesidad de tener que instalarla. También porque se adapta bien al proyecto.
+
+### Marco de pruebas
+Vamos a usar Pytest, ya que es la más completa y sencilla y las características que ofrece son las más indicadas para este proyecto. Para usarla la instalaremos.
+
+### Gestor de tareas
+Vamos a usar Makefile, pues es el más sencillo y rápido de utilizar y es capaz de abarcar las necesidades del proyecto sin tener que realizar instalaciones adicionales o configuraciones más complejas.
 
 ## Concretando y planificando el proyecto
 ### Hitos establecidos para el proyecto
@@ -110,6 +151,4 @@ Enlaces con la documentación del proyecto:
 * [Documentación del Hito 0 de la asignatur, Descripción y lógica](./docs/hito0/README.md)
 * [Documentación del Hito 1 de la asignatura, Planificación](./docs/hito1/README.md)
 * [Documentación del Hito 2 de la asignatura, Test](./docs/hito2/README.md)
-	* [Gestor de Tareas](./docs/hito2/gestorTareas.md)
-	* [Biblioteca de Aserciones](./docs/hito2/bibliotecaAserciones.md)
-	* [Marco de Pruebas](./docs/hito2/marcoPruebas.md)
+* [Documentación del Hito 3 de la asignatura, Creación de un contenedor](./docs/hito3/README.md)
