@@ -4,3 +4,4 @@ Esta carpeta contiene la documentación correspondiente al hito 3. La documentac
 
 * [Contenedor base elegido](./contenedorDocker.md)
 * [Archivo Dockerfile](./archivoDockerfile.md)
+* [Registro de contenedores](./registroContenedores.md)
