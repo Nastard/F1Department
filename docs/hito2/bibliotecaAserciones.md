@@ -17,5 +17,5 @@ Página oficial: https://pypi.org/project/assertpy/
 ## Conclusión
 De estas tres bibliotecas de aserciones, vamos a usar Unittest porque es de las más usadas y sencillas de programar, sin necesidad de tener que instalarla. También porque se adapta bien al proyecto.
 
-## Uso de marco de pruebas
+## Uso de la biblioteca de aserciones
 El uso de Unittest se hace dentro de las clases de test.
