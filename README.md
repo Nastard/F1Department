@@ -32,7 +32,7 @@ Para que se ejecute el sistema, se ha creado un archivo llamado [config.yml](../
 
 ### Resultados
 Una vez que el archivo **config.yml** está en el repositorio y tras hacer un **push**, podremos ver en la interfaz web de CircleCI la ejecución y resultado de los test.\
-![CapturaEjecucionCI](./img/ejecucionCI.png)
+![CapturaEjecucionCI](./docs/hito4/img/ejecucionCI.png)
 
 En el siguiente enlace podemos ver todos los resultados.\
 https://app.circleci.com/pipelines/github/Nastard/F1Department?branch=main
