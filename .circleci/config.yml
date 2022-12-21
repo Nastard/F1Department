@@ -6,7 +6,7 @@ jobs:
          - image: nastard/tests_f1department:latest
       steps:
          - checkout
-         - run: make tests
+         - run: make test
 
 workflows:
    tests-workflow:
