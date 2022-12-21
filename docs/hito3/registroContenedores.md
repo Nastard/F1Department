@@ -12,6 +12,8 @@ Se ha configurado un GitHub Action para que suba automáticamente a DockerHub la
 
 ![CapturaSizeImageDockerHub](./img/sizeImageDockerHub.png)
 
+Se puede acceder a la imagen en el siguiente enlace: https://hub.docker.com/r/nastard/tests_f1department
+
 ## GitHub Container Registry
 Ahora vamos a subir la imagen en GitHub Container Registry. Se ha configurado un GitHub Action para que también suba automática la imagen a Github Container Registry. A continuación se muestra que el flujo se ejecuta correctamente:
 
