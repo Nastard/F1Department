@@ -1,0 +1,14 @@
+version: 2.1
+
+jobs:
+   tests:
+      docker:
+         - image: nastard/tests_f1department:latest
+      steps:
+         - checkout
+         - run: make tests
+
+workflows:
+   tests-workflow:
+      jobs:
+         - tests
